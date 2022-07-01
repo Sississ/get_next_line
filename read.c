@@ -13,6 +13,7 @@ char	*get_next(int fd)
 int main()
 {
     int    fd;
+	char *line;
     fd = open("tyger.txt", O_RDONLY);
 	if (fd == -1)
 	{
@@ -21,7 +22,8 @@ int main()
 	}
     for (int i = 0; i < 3; i++)
     {
-        printf("\n i: %d the function output: %s\n", i, get_next(fd));
+		line = get_next(fd);
+		printf("\n i: %d the function output: %s\n", i, line);
     }
 	close(fd);
 }

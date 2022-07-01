@@ -6,13 +6,13 @@
 /*   By: sschofer <sschofer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 13:54:57 by sschofer          #+#    #+#             */
-/*   Updated: 2022/06/30 16:18:19 by sschofer         ###   ########.fr       */
+/*   Updated: 2022/07/01 09:47:12 by sschofer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*the_reader(char *storage)
+char	*the_reader(int fd, char *storage)
 {
 	char	*t_read;
 	int		n_read;
@@ -24,15 +24,16 @@ char	*the_reader(char *storage)
 		return (NULL);
 
 	}
+	n_read = read(fd, t_read, BUFFER_SIZE);
 	while (!ft_strchr(storage,'\n') && n_read > 0)
 	{
-		n_read = read(fd, t_read, BUFFER_SIZE);
+		
 		if (n_read == -1)
 			free (t_read); 
 			return (NULL);
 		storage = ft_strjoin(storage, t_read);
 	}
-	t_read[n_read] == '\0';
+	storage[n_read] = '\0';
 	free(t_read);
 	return (storage);
 }
@@ -54,12 +55,12 @@ char *line_transfer(char *storage)
 	i = 0;
 	while (storage[i] && storage[i] != '\n')
 	{
-		line[i] == storage[i];
+		line[i] = storage[i];
 		i++;
 	}
 if (storage[i] == '\n')
-	line[i] == '\n';
-line[i + 1] == '\0';
+	line[i] = '\n';
+line[i + 1] = '\0';
 return (line);
 }
 
@@ -81,7 +82,7 @@ char	*left_overs(char *storage)
 	printf("storage at entry: %s", storage);
 	printf("temporary string after filling: %s", temp);
 	free(storage);
-	ft_memcpy(storage, temp, temp + ft_lenton(temp));
+	ft_memcpy(storage, temp, (size_t)(temp + ft_lenton(temp)));
 	printf("storage after freeing: %s", storage);
 	free(temp);
 	printf("storage after refilling: %s", storage);
@@ -97,7 +98,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	storage = the_reader(storage);
+	storage = the_reader(fd, storage);
 	if (!storage)
 		return (NULL);
 	line = line_transfer(storage);
