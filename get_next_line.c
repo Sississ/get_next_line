@@ -6,7 +6,7 @@
 /*   By: sschofer <sschofer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 13:54:57 by sschofer          #+#    #+#             */
-/*   Updated: 2022/07/01 09:47:12 by sschofer         ###   ########.fr       */
+/*   Updated: 2022/07/01 12:05:21 by sschofer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ char	*the_reader(int fd, char *storage)
 		return (NULL);
 
 	}
-	n_read = read(fd, t_read, BUFFER_SIZE);
+	n_read = 1;
 	while (!ft_strchr(storage,'\n') && n_read > 0)
 	{
-		
+		n_read = read(fd, t_read, BUFFER_SIZE);
 		if (n_read == -1)
 			free (t_read); 
 			return (NULL);
@@ -77,17 +77,23 @@ char	*left_overs(char *storage)
 	char	*temp;
 
 	if (!storage)
-	return (NULL);
-	temp =  storage; 
+	{
+		free(storage);
+		return (NULL);
+	}
 	printf("storage at entry: %s", storage);
+	temp = malloc(sizeof(char) * (ft_lenton(storage) + 1));
+	ft_memcpy(temp, storage, (size_t)(storage + ft_lenton(storage)));
+	if (!temp)
+	{
+		free (temp);
+		return (NULL);
+	}
 	printf("temporary string after filling: %s", temp);
 	free(storage);
-	ft_memcpy(storage, temp, (size_t)(temp + ft_lenton(temp)));
 	printf("storage after freeing: %s", storage);
+	return (temp);
 	free(temp);
-	printf("storage after refilling: %s", storage);
-	printf("temp after freeing: %s", temp);
-	return (storage);
 }
 
 //get_next_line takes a fd, and sends back one line for each time it is run.
@@ -112,10 +118,19 @@ char	*get_next_line(int fd)
 int main()
 {
     int    fd;
+	char	*line; 
     fd = open("tyger.txt", O_RDONLY);
-    for (int i = 0; i < 5; i++)
-    {
-        printf("\n i: %d the function output: %s\n", i, get_next_line(fd));
-    }
+    if (fd == -1)
+		printf("error at file opening: %d", fd);
+	if (fd == 0)
+		printf("end or empty: %d\n", fd);
+	if (fd >= 1)
+		printf("opened: %d", fd);
+	line = get_next_line(fd);
+	printf("line: %s\n", line);
+	// for (int i = 0; i < 5; i++)
+    // {
+    //     printf("\n i: %d the function output: %s\n", i, get_next_line(fd));
+    // }
 	close(fd);
 }
