@@ -6,7 +6,7 @@
 /*   By: sschofer <sschofer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 13:54:57 by sschofer          #+#    #+#             */
-/*   Updated: 2022/07/01 12:05:21 by sschofer         ###   ########.fr       */
+/*   Updated: 2022/07/01 16:04:16 by sschofer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,21 @@ char	*the_reader(int fd, char *storage)
 	t_read = (malloc(sizeof(char) * BUFFER_SIZE + 1));
 	if (!t_read)
 	{
-		free (t_read);
 		return (NULL);
-
 	}
 	n_read = 1;
-	while (!ft_strchr(storage,'\n') && n_read > 0)
+	while (!ft_strchr(storage, '\n') && n_read > 0)
 	{
 		n_read = read(fd, t_read, BUFFER_SIZE);
 		if (n_read == -1)
+		{
 			free (t_read); 
 			return (NULL);
+		}
+		t_read[n_read] = '\0';
 		storage = ft_strjoin(storage, t_read);
 	}
-	storage[n_read] = '\0';
+	printf("the reader: storage: %s\n", storage);
 	free(t_read);
 	return (storage);
 }
@@ -128,9 +129,9 @@ int main()
 		printf("opened: %d", fd);
 	line = get_next_line(fd);
 	printf("line: %s\n", line);
-	// for (int i = 0; i < 5; i++)
-    // {
-    //     printf("\n i: %d the function output: %s\n", i, get_next_line(fd));
-    // }
+	for (int i = 0; i < 5; i++)
+    {
+        printf("\n i: %d the function output: %s\n", i, get_next_line(fd));
+    }
 	close(fd);
 }
