@@ -6,7 +6,7 @@
 /*   By: sschofer <sschofer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 13:45:10 by sschofer          #+#    #+#             */
-/*   Updated: 2022/07/01 16:41:23 by sschofer         ###   ########.fr       */
+/*   Updated: 2022/07/07 13:50:57 by sschofer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 char	*left_overs(char *storage)
 {
 	char	*temp;
+	int		i;
 
 	if (!storage)
 	{
@@ -30,12 +31,16 @@ char	*left_overs(char *storage)
 		printf("no temp\n");
 		return (NULL);
 	}
-	ft_memcpy(temp, storage, (storage + ft_strchr(storage, '\n')));
-	printf("temporary string after filling: %s", temp);
-	free(storage);
-	printf("storage after freeing: %s", storage);
+	i = 0; 
+	while (storage[i] && storage[i] != '\0')
+	{
+		temp[i] = storage[i];
+		i++;
+	}
+	printf("temporary string after filling: %s\n", temp);
 	return (temp);
 	free(temp);
+	free(storage);
 }
 
 // need to figure out how to solve lenton if no n in the case of memcpy. maybe use strchr instead. 
@@ -47,13 +52,15 @@ int main ()
 
 	teststr = "office hours \n and later on\n";
 	returnstr = left_overs(teststr);
-	printf("%s\n",returnstr);
-
-
-
+	printf("returned string: %s\n",returnstr);
 
 }
 
+	// while (*storage++ != '\0')
+	// {
+	// 	temp = storage;
+	// 	temp++;
+	// }
 
 // char	*the_reader(int fd, char *storage)
 // {
