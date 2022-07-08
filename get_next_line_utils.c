@@ -6,7 +6,7 @@
 /*   By: sschofer <sschofer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 10:21:23 by sschofer          #+#    #+#             */
-/*   Updated: 2022/07/08 12:34:52 by sschofer         ###   ########.fr       */
+/*   Updated: 2022/07/08 13:41:43 by sschofer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	char	*js;
 	size_t	i;
 
+	if (!s1)
+	s1 = (char *)calloc(1, sizeof(char));
 	if (!s1 || !s2)
 		return (NULL);
 	js = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
@@ -49,18 +51,34 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (js);
 }
 
-char	*ft_strchr(const char *s, int c)
+// char	*ft_strchr(const char *s, int c)
+// {
+// 	while (*s != '\0' && *s != (char)c)
+// 	{
+// 		s++;
+// 	}
+// 	if (*s == (char)c)
+// 	{
+// 		return ((char *)s);
+// 	}
+// 	return (NULL);
+// }
+
+char	*ft_strchr(const char *str, int c)
 {
-	while (*s != '\0' && *s != (char)c)
+	int	i;
+
+	if (str)
 	{
-		s++;
-	}
-	if (*s == (char)c)
-	{
-		return ((char *)s);
+	i = 0;
+	while (str[i] && (char)str[i] != (char)c)
+			i++;
+		if ((char)str[i] == (char)c)
+			return ((char *)&str[i]);
 	}
 	return (NULL);
 }
+
 
 size_t	ft_lenton(const char *s)
 {
