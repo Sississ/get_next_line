@@ -6,11 +6,13 @@
 /*   By: sschofer <sschofer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 13:54:57 by sschofer          #+#    #+#             */
-/*   Updated: 2022/07/01 16:04:16 by sschofer         ###   ########.fr       */
+/*   Updated: 2022/07/08 12:02:51 by sschofer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+
 
 char	*the_reader(int fd, char *storage)
 {
@@ -76,6 +78,7 @@ return (line);
 char	*left_overs(char *storage)
 {
 	char	*temp;
+	int		i;
 
 	if (!storage)
 	{
@@ -84,18 +87,48 @@ char	*left_overs(char *storage)
 	}
 	printf("storage at entry: %s", storage);
 	temp = malloc(sizeof(char) * (ft_lenton(storage) + 1));
-	ft_memcpy(temp, storage, (size_t)(storage + ft_lenton(storage)));
+	printf("address of temp: %p\n", &temp);
 	if (!temp)
 	{
 		free (temp);
+		printf("no temp\n");
 		return (NULL);
 	}
-	printf("temporary string after filling: %s", temp);
-	free(storage);
-	printf("storage after freeing: %s", storage);
+	i = 0; 
+	while (storage[i] && storage[i] != '\0')
+	{
+		temp[i] = storage[i];
+		i++;
+	}
+	printf("temporary string after filling: %s\n", temp);
 	return (temp);
 	free(temp);
+	free(storage);
 }
+
+// char	*left_overs(char *storage)
+// {
+// 	char	*temp;
+
+// 	if (!storage)
+// 	{
+// 		free(storage);
+// 		return (NULL);
+// 	}
+// 	printf("storage at entry: %s", storage);
+// 	temp = malloc(sizeof(char) * (ft_lenton(storage) + 1));
+// 	ft_memcpy(temp, storage, (size_t)(storage + ft_lenton(storage)));
+// 	if (!temp)
+// 	{
+// 		free (temp);
+// 		return (NULL);
+// 	}
+// 	printf("temporary string after filling: %s", temp);
+// 	free(storage);
+// 	printf("storage after freeing: %s", storage);
+// 	return (temp);
+// 	free(temp);
+// }
 
 //get_next_line takes a fd, and sends back one line for each time it is run.
 char	*get_next_line(int fd)
